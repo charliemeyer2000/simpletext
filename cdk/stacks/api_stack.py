@@ -24,18 +24,14 @@ class APIStack(Stack):
 
         api = self.__create_and_connect_apigw(hosted_zone)
 
-        
-
-
-
-
+        self.add_health_check_lambda(api)
 
     def __create_hosted_zone_if_not_exists(self) -> route53.HostedZone:
         """
         Creates the Route53 hosted zone for `api-{environment}.simpletext.dev`
         """
 
-        domain_name = f'api-{self.env_name}.simpletext.dev' if self.env_name != 'prod' else 'api.simpletext.dev'
+        domain_name = f'api.{self.env_name}.simpletext.dev' if self.env_name != 'prod' else 'api.simpletext.dev'
 
         hosted_zone = route53.HostedZone(self, f'{self.env_name}-SimpletText-HZ', zone_name=domain_name)
 
@@ -46,9 +42,12 @@ class APIStack(Stack):
         Creates the API Gateway and connects it to route53 hosted zone
         """
 
-        acm_certificate = acm.Certificate(self, f'{self.env_name}-SimpleText-Certificate',
+        acm_certificate = acm.Certificate(self, f'SimpleText-Certificate',
                                           domain_name=hosted_zone.zone_name,
-                                          validation=acm.CertificateValidation.from_dns(hosted_zone))
+                                          validation=acm.CertificateValidation.from_dns(hosted_zone),
+                                          subject_alternative_names=[f'*.{hosted_zone.zone_name}', 'api.dev.simpletext.dev', 'api.staging.simpletext.dev', 'api.simpletext.dev']
+                                          )
+
         
         domain_name_opts = apigw.DomainNameOptions(
             certificate=acm_certificate,
@@ -88,29 +87,3 @@ class APIStack(Stack):
         health_check_integration = apigw.LambdaIntegration(health_check_lambda)
 
         api.root.add_resource('health').add_method('GET', health_check_integration)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
