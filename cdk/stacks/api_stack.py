@@ -17,22 +17,18 @@ class APIStack(Stack):
         self.__create_stack()
 
     
-    def __create_stack(self):
+    def __create_stack(self) -> None:
 
         self.__create_hosted_zone_if_not_exists()
 
-    def __create_hosted_zone_if_not_exists(self):
+    def __create_hosted_zone_if_not_exists(self) -> None:
         """
         Creates the Route53 hosted zone for `api-{environment}.simpletext.dev`
         """
 
         domain_name = f'api-{self.env_name}.simpletext.dev' if self.env_name != 'prod' else 'api.simpletext.dev'
 
-        hosted_zone = route53.HostedZone.from_lookup(self, f'{self.env_name}-SimpletText-HZ', domain_name=domain_name)
-
-        # if the hosted zone does not exist, create it
-        if not hosted_zone:
-            hosted_zone = route53.HostedZone(self, f'{self.env_name}-SimpletText-HZ', zone_name=domain_name)
+        hosted_zone = route53.HostedZone(self, f'{self.env_name}-SimpletText-HZ', zone_name=domain_name)
 
 
 
