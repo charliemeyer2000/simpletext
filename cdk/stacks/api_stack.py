@@ -12,14 +12,14 @@ from constructs import Construct
 class APIStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, env: Environment, env_name: str, **kwargs) -> None:
-        super().__init__(scope, construct_id, env=env **kwargs)
+        super().__init__(scope, construct_id, env=env, **kwargs)
         self.env_name = env_name
         self.__create_stack()
 
     
     def __create_stack(self):
 
-        self.__create_hosted_zone_if_not_exists(self)
+        self.__create_hosted_zone_if_not_exists()
 
     def __create_hosted_zone_if_not_exists(self):
         """
