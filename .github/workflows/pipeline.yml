@@ -1,0 +1,221 @@
+name: CDK Synth & Deploy
+
+on:
+    pull_request:
+        branches:
+            - main
+            - staging
+            - dev
+env: 
+    AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_PRIMARY_REGION: us-east-1
+    AWS_SECONDARY_REGION: us-west-2
+    CDK_DIRECTORY: cdk
+    CFN_LINT: true
+    CFN_NAG: true
+
+jobs:
+
+    synth:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure Python
+              uses: actions/setup-python@v5
+
+            - name: Configure Node
+              uses: actions/setup-node@v4
+
+            - name: Install CDK
+              run: npm install -g aws-cdk
+
+            - name: Install CDK Python Dependencies
+              run: pip install -r requirements.txt
+              working-directory: ${{ env.CDK_DIRECTORY }}
+            
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with: 
+                aws-region: ${{ env.AWS_PRIMARY_REGION }}
+                aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+            
+            - name: Run CDK Synth Dev Main Region
+              shell: bash
+              working-directory: ${{ env.CDK_DIRECTORY }}
+              run: |
+                cdk synth \
+                    --context awsEnvironment=dev \
+                    --context region=${{ env.AWS_PRIMARY_REGION }}
+                    --context account=${{ env.AWS_ACCOUNT_ID }}
+                    --output cdk.out/dev/${{ env.AWS_PRIMARY_REGION }}
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_PRIMARY_REGION }}                
+            
+            - name: Run CDK Synth Dev Secondary Region
+              shell: bash
+              working-directory: ${{ env.CDK_DIRECTORY }}
+              run: |
+                cdk synth \
+                    --context awsEnvironment=dev \
+                    --context region=${{ env.AWS_SECONDARY_REGION }}
+                    --context account=${{ env.AWS_ACCOUNT_ID }}
+                    --output cdk.out/dev/${{ env.AWS_SECONDARY_REGION }}
+              env: 
+                CDK_DEFAULT_REGION: ${{ env.AWS_SECONDARY_REGION }}
+
+            
+            - name: Run CDK Synth Staging Main Region
+              shell: bash
+              working-directory: ${{ env.CDK_DIRECTORY }}
+              run: |
+                cdk synth \
+                    --context awsEnvironment=staging \
+                    --context region=${{ env.AWS_PRIMARY_REGION }}
+                    --context account=${{ env.AWS_ACCOUNT_ID }}
+                    --output cdk.out/staging/${{ env.AWS_PRIMARY_REGION }}
+              env: 
+                CDK_DEFAULT_REGION: ${{ env.AWS_PRIMARY_REGION }}
+            
+            - name: Run CDK Synth Staging Secondary Region
+              shell: bash
+              working-directory: ${{ env.CDK_DIRECTORY }}
+              run: |
+                cdk synth \
+                    --context awsEnvironment=staging \
+                    --context region=${{ env.AWS_SECONDARY_REGION }}
+                    --context account=${{ env.AWS_ACCOUNT_ID }}
+                    --output cdk.out/staging/${{ env.AWS_SECONDARY_REGION }}
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_SECONDARY_REGION }}
+            
+            - name: Run CDK Synth Prod Main Region
+              shell: bash
+              working-directory: ${{ env.CDK_DIRECTORY }}
+              run: |
+                cdk synth \
+                    --context awsEnvironment=prod \
+                    --context region=${{ env.AWS_PRIMARY_REGION }}
+                    --context account=${{ env.AWS_ACCOUNT_ID }}
+                    --output cdk.out/prod/${{ env.AWS_PRIMARY_REGION }}
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_PRIMARY_REGION }}
+            
+            - name: Run CDK Synth Prod Secondary Region
+              shell: bash
+              working-directory: ${{ env.CDK_DIRECTORY }}
+              run: |
+                cdk synth \
+                    --context awsEnvironment=prod \
+                    --context region=${{ env.AWS_SECONDARY_REGION }}
+                    --context account=${{ env.AWS_ACCOUNT_ID }}
+                    --output cdk.out/prod/${{ env.AWS_SECONDARY_REGION }}
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_SECONDARY_REGION }}
+                
+            - name: Zip
+              shell: bash
+              run: |
+                pushd ${{ env.CDK_DIRECTORY }}/cdk.out
+                zip -r cdk.zip .
+                popd
+                
+            - name: Upload
+              uses: actions/upload-artifact@v4
+              with: 
+                name: cdk-out
+                path: ${{ env.CDK_DIRECTORY }}/cdk.out/cdk.zip
+                if-no-files-found: error
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs: synth
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+
+            - name: Install AWS CDK
+              shell: bash
+              run: |
+                npm install -g aws-cdk
+            
+            - name: Download CDK Artifacts
+              uses: actions/download-artifact@v4
+              with:
+                name: cdk-out
+                path: ${{ env.CDK_DIRECTORY }}/cdk.out
+        
+            - name: Unzip CDK Output
+              shell: bash
+              run: |
+                pushd ${{ env.CDK_DIRECTORY }}/cdk.out
+                unzip cdk.zip
+                rm cdk.zip
+                popd
+            
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with: 
+                aws-region: ${{ env.AWS_PRIMARY_REGION }}
+                aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+            
+            - name: Deploy CDK Dev Main Region
+              if: ${{ github.ref == 'dev' && github.event_name == 'pull_request' }}
+              shell: bash
+              run: cdk deploy "*" --app cdk.out/dev/${{ env.AWS_PRIMARY_REGION }} --verbose --require-approval never
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_PRIMARY_REGION }}
+            
+            - name: Deploy CDK Dev Secondary Region
+              if: ${{ github.ref == 'dev' && github.event_name == 'pull_request' }}
+              shell: bash
+              run: cdk deploy "*" --app cdk.out/dev/${{ env.AWS_SECONDARY_REGION }} --verbose --require-approval never
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_SECONDARY_REGION }}
+            
+            - name: Deploy CDK Staging Main Region
+              if: ${{ github.ref == 'staging' && github.event_name == 'pull_request' }}
+              shell: bash
+              run: cdk deploy "*" --app cdk.out/staging/${{ env.AWS_PRIMARY_REGION }} --verbose --require-approval never
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_PRIMARY_REGION }}
+
+            - name: Deploy CDK Staging Secondary Region
+              if: ${{ github.ref == 'staging' && github.event_name == 'pull_request' }}
+              shell: bash
+              run: cdk deploy "*" --app cdk.out/staging/${{ env.AWS_SECONDARY_REGION }} --verbose --require-approval never
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_SECONDARY_REGION }}
+            
+            - name: Deploy CDK Prod Main Region
+              if: ${{ github.ref == 'main' && github.event_name == 'pull_request' }}
+              shell: bash
+              run: cdk deploy "*" --app cdk.out/prod/${{ env.AWS_PRIMARY_REGION }} --verbose --require-approval never
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_PRIMARY_REGION }}
+            
+            - name: Deploy CDK Prod Secondary Region
+              if: ${{ github.ref == 'main' && github.event_name == 'pull_request' }}
+              shell: bash
+              run: cdk deploy "*" --app cdk.out/prod/${{ env.AWS_SECONDARY_REGION }} --verbose --require-approval never
+              env:
+                CDK_DEFAULT_REGION: ${{ env.AWS_SECONDARY_REGION }}
+
+
+
+
+                
+
+
+
