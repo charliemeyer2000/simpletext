@@ -20,7 +20,7 @@ class Main:
         self.__synth()
 
     def __create_stack(self):
-        APIStack(self.app, "CdkStack", env=self.environmentObj, env_name=self.awsEnvironment)
+        APIStack(self.app, f'{self.awsEnvironment}-SimpleTextAPIStack', env=self.environmentObj, env_name=self.awsEnvironment)
 
     def __synth(self):
         self.app.synth()

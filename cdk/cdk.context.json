@@ -6,5 +6,9 @@
   "hosted-zone:account=653584531510:domainName=api.dev.simpletext.dev:region=us-east-1": {
     "Id": "/hostedzone/Z06074252MX7OPB18LBK7",
     "Name": "api.dev.simpletext.dev."
+  },
+  "hosted-zone:account=653584531510:domainName=api.staging.simpletext.dev:region=us-east-1": {
+    "Id": "/hostedzone/Z07959802YG6DT1R4UY2J",
+    "Name": "api.staging.simpletext.dev."
   }
 }
