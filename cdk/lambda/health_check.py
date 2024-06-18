@@ -9,7 +9,7 @@ def handler(event, context):
 
     response = {
         'statusCode': 200,
-        'body': json.dumps('Healthy')
+        'body': json.dumps(f'Healthy from {os.environ["ENV"]}!')
     }
 
     return response

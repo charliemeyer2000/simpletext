@@ -1,1 +1,10 @@
-{}
+{
+  "hosted-zone:account=653584531510:domainName=simpletext.dev:region=us-east-1": {
+    "Id": "/hostedzone/Z08298971SUR6E2YQQGD0",
+    "Name": "simpletext.dev."
+  },
+  "hosted-zone:account=653584531510:domainName=api.dev.simpletext.dev:region=us-east-1": {
+    "Id": "/hostedzone/Z06074252MX7OPB18LBK7",
+    "Name": "api.dev.simpletext.dev."
+  }
+}
