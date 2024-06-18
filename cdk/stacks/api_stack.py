@@ -17,6 +17,7 @@ class APIStack(Stack):
         self.env_name = env_name
         self.domain_name = 'simpletext.dev'
         self.api_domain_name = f'api.{self.env_name}.simpletext.dev' if self.env_name != "prod" else "api.simpletext.dev"
+        self.certificate_arn = self.node.try_get_context("certificate-arns")['api'][self.env_name]
         self.__create_stack()
 
     def __create_stack(self) -> None:
@@ -42,7 +43,7 @@ class APIStack(Stack):
         """
 
         acm_certificate = acm.Certificate.from_certificate_arn(self, f'{self.env_name}-SimpleTextAPICert', 
-                                                               certificate_arn="arn:aws:acm:us-east-1:653584531510:certificate/8879f39e-d1d0-430c-a84d-c05a526a19f2"
+                                                               certificate_arn=self.certificate_arn
                                                                )
 
         domain_name_opts = apigw.DomainNameOptions(
@@ -55,11 +56,6 @@ class APIStack(Stack):
                             rest_api_name=f'{self.env_name}-SimpleText-API',
                             description=f'{self.env_name} - Small backend API for SimpleText',
                             domain_name=domain_name_opts,
-        )
-
-        apigw.BasePathMapping(self, f'{self.env_name}-SimpleText-BasePathMapping',
-                                                  domain_name=api.domain_name,
-                                                  rest_api=api
         )
 
         route53.ARecord(self, f'{self.env_name}-SimpleText-ApiARecord',

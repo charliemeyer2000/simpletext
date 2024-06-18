@@ -15,6 +15,13 @@
     ]
   },
   "context": {
+    "certificate-arns": {
+      "api": {
+        "dev": "arn:aws:acm:us-east-1:653584531510:certificate/8879f39e-d1d0-430c-a84d-c05a526a19f2",
+        "staging": "x",
+        "prod": "x"
+      }
+    },
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": [
