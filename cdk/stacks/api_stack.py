@@ -33,7 +33,7 @@ class APIStack(Stack):
         """
 
         hosted_zone = route53.HostedZone.from_lookup(self, f'{self.env_name}-SimpleTextHZ',
-                                                     domain_name=self.api_domain_name)
+                                                     domain_name=self.domain_name)
 
         return hosted_zone
 
@@ -61,7 +61,7 @@ class APIStack(Stack):
         route53.ARecord(self, f'{self.env_name}-SimpleText-ApiARecord',
                             zone=hosted_zone,
                             target=route53.RecordTarget.from_alias(route53_targets.ApiGateway(api)),
-                            record_name=self.api_domain_name + '.'
+                            record_name=self.api_domain_name
         )
 
 
