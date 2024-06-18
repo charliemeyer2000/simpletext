@@ -18,8 +18,8 @@
     "certificate-arns": {
       "api": {
         "dev": "arn:aws:acm:us-east-1:653584531510:certificate/8879f39e-d1d0-430c-a84d-c05a526a19f2",
-        "staging": "x",
-        "prod": "x"
+        "staging": "arn:aws:acm:us-east-1:653584531510:certificate/800e4f69-6996-456c-81f4-98328998e38c",
+        "prod": "arn:aws:acm:us-east-1:653584531510:certificate/18624dac-ebbe-4dbd-af27-545b41da99e6"
       }
     },
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
