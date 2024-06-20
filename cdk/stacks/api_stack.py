@@ -8,6 +8,9 @@ from aws_cdk import (
     aws_route53_targets as route53_targets,
     Environment
 )
+
+from aws_solutions_constructs.aws_cloudfront_apigateway import CloudFrontToApiGateway
+
 from constructs import Construct
 
 class APIStack(Stack):
@@ -24,6 +27,7 @@ class APIStack(Stack):
         hosted_zone = self.__get_hosted_zone()
 
         api = self.__create_and_connect_apigw(hosted_zone)
+
 
         self.add_health_check_lambda(api)
 
@@ -64,6 +68,8 @@ class APIStack(Stack):
                             record_name=self.api_domain_name
         )
 
+        CloudFrontToApiGateway(self, f'{self.env_name}-SimpleText-CloudFrontToApiGateway',
+                               existing_api_gateway_obj=api)
 
 
         return api
