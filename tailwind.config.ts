@@ -19,6 +19,7 @@ const config = {
     },
     fontFamily: {
       'sans': ['Geist Sans', 'sans-serif'],
+      'mono': ['Geist Mono', 'monospace'],
     },
     extend: {
       colors: {
