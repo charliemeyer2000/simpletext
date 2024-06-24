@@ -1,12 +1,20 @@
 import Link from "next/link";
 import {ThemeToggle} from "@/components/custom/themeToggle";
 import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
 import {CommandSearchBar} from "@/components/custom/commandSearchBar";
 import ArrowUpRight from "@/public/svg/arrow-up-right.svg";
-import Copy from "@/public/svg/copy.svg";
 import Image from "next/image";
 import CopyButton from "@/components/custom/copyButton";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu"
 
 export default function Home() {
 
@@ -24,16 +32,16 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex flex-grow justify-center items-center gap-x-4 opacity-80">
-              <Link href="mailto:contact@simpletext.dev" className="text-sm text-grey hover:text-primary">
-                Contact
-              </Link>
-              <Link href="#pricing" scroll={false} className="text-sm text-grey hover:text-primary">
-                Pricing
-              </Link>
-              <Link href="https://docs.simpletext.dev" target="_blank" rel="noopener noreferrer" className="relative text-sm text-grey hover:text-primary">
-                <span>Docs</span>
-                <Image src={ArrowUpRight} className="absolute top-[-1px] right-[-10px] text-xs transition-transform duration-200 hover:-translate-y-1 hover:-translate-x-1" alt="External Link" />
-              </Link>
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <NavigationMenuLink>Link</NavigationMenuLink>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             </div>
             <div className="flex flex-row ml-auto items-center gap-x-4">
               <CommandSearchBar />
@@ -45,7 +53,7 @@ export default function Home() {
 
         <main className="flex flex-col gap-y-8 flex-grow items-center justify-center overflow-auto">
           <div className="max-w-4xl text-center">
-            <h1 className="text-5xl font-bold">
+            <h1 className="text-6xl font-black tracking-tight">
               <span className="text-theme-primary">stupidly simple</span>
               <span> sms for the modern app developer.</span>
             </h1>
