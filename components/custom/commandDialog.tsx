@@ -11,7 +11,7 @@ import {
 } from "lucide-react"
 
 import {
-    CommandDialog,
+    CommandDialog as CMD,
     CommandEmpty,
     CommandGroup,
     CommandInput,
@@ -21,25 +21,29 @@ import {
     CommandShortcut,
 } from "@/components/ui/command";
 
-interface CommandDialogDemoProps {
-    onOpenChange: (open: boolean) => void;
+interface CommandDialogProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+
 }
 
-export function CommandDialogDemo({onOpenChange}: CommandDialogDemoProps) {
-    const [open, setOpen] = React.useState(false)
+export function CommandDialog({open, setOpen}: CommandDialogProps) {
 
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
-            if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+            if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault()
-                const newOpenState = !open;
-                setOpen(newOpenState);
-                onOpenChange?.(newOpenState);
+                setOpen(true);
+
             }
         }
 
+
         document.addEventListener("keydown", down)
-        return () => document.removeEventListener("keydown", down)
+        return () => {
+            document.removeEventListener("keydown", down);
+        }
+
     }, [])
 
     return (
@@ -50,7 +54,7 @@ export function CommandDialogDemo({onOpenChange}: CommandDialogDemoProps) {
           <span className="text-xs">⌘</span>J
         </kbd>
       </p> */}
-            <CommandDialog open={open} onOpenChange={setOpen}>
+            <CMD open={open} onOpenChange={setOpen}>
                 <CommandInput placeholder="Type a command or search..." />
                 <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
@@ -87,7 +91,9 @@ export function CommandDialogDemo({onOpenChange}: CommandDialogDemoProps) {
                         </CommandItem>
                     </CommandGroup>
                 </CommandList>
-            </CommandDialog>
+            </CMD>
         </>
     )
 }
+
+
