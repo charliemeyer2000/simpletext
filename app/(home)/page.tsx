@@ -54,7 +54,11 @@ export default function Home() {
               ~ npm i simpletext
             </h2>
             <CopyButton text="npm i simpletext" />
-
+          </div>
+          <div className="flex flex-row items-center justify-center gap-x-4">
+            <Button className="text-md">Get Started</Button>
+            <Button className="text-md" variant={"outline"}>Read the Docs</Button>
+            <ThemeToggle />
           </div>
 
         </main>
