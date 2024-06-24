@@ -14,7 +14,7 @@ export default function Home() {
     <>
       <div className="flex h-screen flex-col justify-between">
         <header className="sticky top-0 z-50 w-full bg-background dark:bg-background shadow-sm">
-          <nav className="mx-auto flex max-w-5xl items-center justify-between gap-x-6 p-6 lg:px-8">
+          <nav className="mx-auto flex max-w-7xl items-center justify-between gap-x-6 p-6 lg:px-8">
             <div className="flex lg:flex-1 items-center">
               <Link href="/">
                 <h1 className="relative flex flex-row items-baseline text-2xl font-bold">
@@ -38,6 +38,7 @@ export default function Home() {
             <div className="flex flex-row ml-auto items-center gap-x-4">
               <CommandSearchBar />
               <Button className="text-sm">Get Started</Button>
+              <ThemeToggle />
             </div>
           </nav>
         </header>
@@ -58,7 +59,6 @@ export default function Home() {
           <div className="flex flex-row items-center justify-center gap-x-4">
             <Button className="text-md">Get Started</Button>
             <Button className="text-md" variant={"outline"}>Read the Docs</Button>
-            <ThemeToggle />
           </div>
 
         </main>
