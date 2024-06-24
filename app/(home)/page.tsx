@@ -1,12 +1,16 @@
 import Link from "next/link";
 import {ThemeToggle} from "@/components/custom/themeToggle";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
+import {CommandDialogDemo} from "@/components/custom/commandDialogMemo";
 
 
 import Image from "next/image";
+import {Command} from "lucide-react";
 
 export default function Home() {
   return (
+    <>
+      <CommandDialogDemo onOpenChange={() => { }} />
     <div className="flex h-screen flex-col justify-between">
       <header className="sticky top-0 z-50 w-full bg-background dark:bg-background shadow-sm">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-x-6 p-6 lg:px-8">
@@ -36,5 +40,6 @@ export default function Home() {
         </nav>
       </header>
     </div>
+    </>
   );
 }
