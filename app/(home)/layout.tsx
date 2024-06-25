@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-screen w-screen bg-background font-sans text-foreground">
+      <body className="h-screen w-screen bg-background font-sans text-foreground overflow-x-hidden">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

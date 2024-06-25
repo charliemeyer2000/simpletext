@@ -1,29 +1,56 @@
 import Link from "next/link";
+import Image from "next/image";
 import {ThemeToggle} from "@/components/custom/themeToggle";
 import {Button} from "@/components/ui/button";
-import {Skeleton} from "@/components/ui/skeleton";
 import {CommandSearchBar} from "@/components/custom/commandSearchBar";
-import ArrowUpRight from "@/public/svg/arrow-up-right.svg";
-import Image from "next/image";
 import CopyButton from "@/components/custom/copyButton";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
-// import react
+import TypeScript from "@/public/svg/typescript.svg";
 import React from "react";
-import {cn} from "@/lib/utils";
+
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {solarizedlight} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import {oneLight} from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+import {CodeBlock} from "@/components/custom/codeBlock";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+const CodeExample = () => {
+  const codeString = `
+  import { SimpleText } from 'simpletext';
+
+  const stClient = SimpleText.configure({
+    apiKey: process.env.SIMPLETEXT_API_KEY,
+    apiSecret: process.env.SIMPLETEXT_API_SECRET,
+  });
+
+  simpleText.sendSMS({
+    to: '+15555555555',
+    message: 'Hello, World!',
+  });
+  `
+  return (
+    <SyntaxHighlighter language="typescript" style={oneLight} customStyle={{'background': "transparent"}} codeTagProps={{
+      style: {
+        'background': 'transparent',
+      }
+    }}>
+      {codeString}
+    </SyntaxHighlighter>
+  );
+};
 
 export default function Home() {
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <div className="flex h-screen flex-col justify-between">
         <header className="sticky top-0 z-50 w-full bg-background dark:bg-background shadow-sm">
           <nav className="mx-auto flex max-w-7xl items-center justify-between gap-x-6 p-6 lg:px-8">
@@ -71,60 +98,39 @@ export default function Home() {
             <Button className="text-md">Get Started</Button>
             <Button className="text-md" variant={"outline"}>Read the Docs</Button>
           </div>
-
         </main>
-
-        <footer className="overflow-auto">
-          {/* ... */}
-        </footer>
-
       </div >
-    </>
+      <section className="flex flex-col items-center justify-center gap-y-10">
+        <div className="flex flex-row items-start justify-start gap-x-4">
+          <CodeBlock
+            code={`
+import { SimpleText } from 'simpletext';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: NextRequest) {
+  
+  const stClient = SimpleText.configure({
+    apiKey: process.env.SIMPLETEXT_API_KEY,
+    apiSecret: process.env.SIMPLETEXT_API_SECRET,
+  });
+
+  const { to, message } = req.body;
+
+  await stClient.sendSMS({
+    to,
+    message,
+  });
+
+  return NextResponse.json({ status: 200 });
+
+}`
+            }
+            language="typescript"
+            languageImage={TypeScript}
+            fileName="app/api/sms/route.ts"
+          />
+        </div>
+      </section>
+    </div>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<typeof Link>,
-  React.ComponentPropsWithoutRef<typeof Link> & {title: string}
->(({className, title, children, ...props}, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <Link
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="font-medium text-sm leading-none">{title}</div>
-          <p className="line-clamp-2 text-muted-foreground text-sm leading-snug">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";
-
-const BrandListItem = ({className}: {className?: string}) => {
-  return (
-    <li className={className}>
-      <NavigationMenuLink asChild>
-        <Link
-          className="flex flex-col justify-start bg-gradient-to-b from-muted/50 to-muted focus:shadow-md p-6 rounded-md w-full h-full no-underline select-none outline-none"
-          href="/"
-        >
-          <img src="/favicon.png" alt="Logo" className="rounded-xl w-20 h-20" />
-          <div className="mt-4 mb-2 font-medium text-lg">Audoly</div>
-          <p className="text-muted-foreground text-sm leading-tight">
-            Playlisting made easy. Find playlist curators, get contact
-            information, and take your music to the next level.
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-};
