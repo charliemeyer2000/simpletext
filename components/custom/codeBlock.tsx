@@ -1,8 +1,10 @@
+"use client";
 import {cn} from "@/lib/utils";
 import Image from "next/image";
-import {oneLight} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import {oneLight, oneDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import CopyButton from "@/components/custom/copyButton";
+import {useTheme} from "next-themes";
 
 interface CodeBlockProps {
     code: string;
@@ -14,6 +16,8 @@ interface CodeBlockProps {
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageImage, fileName, className}) => {
 
+    const theme = useTheme();
+
     const CodeExample = () => {
 
         const codeString = code;
@@ -21,7 +25,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageIma
         return (
             <SyntaxHighlighter
                 language={language}
-                style={oneLight}
+                style={theme.theme === 'dark' ? oneDark : oneLight}
                 customStyle={{'background': "transparent", 'textAlign': 'left'}}
                 codeTagProps={{
                     style: {

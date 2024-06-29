@@ -7,45 +7,7 @@ import CopyButton from "@/components/custom/copyButton";
 import TypeScript from "@/public/svg/typescript.svg";
 import React from "react";
 
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
-import {solarizedlight} from 'react-syntax-highlighter/dist/esm/styles/prism';
-import {oneLight} from 'react-syntax-highlighter/dist/esm/styles/prism';
-
 import {CodeBlock} from "@/components/custom/codeBlock";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-const CodeExample = () => {
-  const codeString = `
-  import { SimpleText } from 'simpletext';
-
-  const stClient = SimpleText.configure({
-    apiKey: process.env.SIMPLETEXT_API_KEY,
-    apiSecret: process.env.SIMPLETEXT_API_SECRET,
-  });
-
-  simpleText.sendSMS({
-    to: '+15555555555',
-    message: 'Hello, World!',
-  });
-  `
-  return (
-    <SyntaxHighlighter language="typescript" style={oneLight} customStyle={{'background': "transparent"}} codeTagProps={{
-      style: {
-        'background': 'transparent',
-      }
-    }}>
-      {codeString}
-    </SyntaxHighlighter>
-  );
-};
 
 export default function Home() {
 
