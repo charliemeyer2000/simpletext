@@ -26,13 +26,13 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageIma
                 codeTagProps={{
                     style: {
                         'background': 'transparent',
-                        'fontSize': '14px',
-                        
+                        'fontSize': '14px',   
                     }
                 }}
+                showLineNumbers
+                
             >
                 {codeString}
-
             </SyntaxHighlighter>
         );
     };
@@ -46,7 +46,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageIma
                 </div>
                 <CopyButton text={code} className="w-5 h-5" />
             </div>
-            <div className="border-t px-20">
+            <div className="border-t px-5">
                 <CodeExample />
             </div>
         </div>

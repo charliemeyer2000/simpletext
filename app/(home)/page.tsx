@@ -89,7 +89,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex flex-row items-center justify-center gap-x-4">
-            <h2 className="text-2xl font-mono text-center text-grey">
+            <h2 className="text-2xl font-mono text-center text-grey dark:text-primary">
               ~ npm i simpletext
             </h2>
             <CopyButton text="npm i simpletext" />
@@ -101,10 +101,9 @@ export default function Home() {
         </main>
       </div >
       <section className="flex flex-col items-center justify-center gap-y-10">
-        <div className="flex flex-row items-start justify-start gap-x-4">
+        <div className="fxlex flex-row items-start justify-start gap-x-4">
           <CodeBlock
-            code={`
-import { SimpleText } from 'simpletext';
+            code={`import { SimpleText } from 'simpletext';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
