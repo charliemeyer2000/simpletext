@@ -33,8 +33,6 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageIma
                         'fontSize': '14px',   
                     }
                 }}
-                showLineNumbers
-                
             >
                 {codeString}
             </SyntaxHighlighter>
@@ -45,7 +43,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageIma
         <div className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)}>
             <div className="flex flex-row items-center justify-between p-6 background-[#FAFAFA]">
                 <div className="flex flex-row items-center justify-start gap-x-4">
-                    <Image src={languageImage} alt="TypeScript Logo" width={20} height={20} />
+                    <Image src={languageImage} alt="TypeScript Logo" width={15} height={15} />
                     <p className="text-sm text-grey">{fileName}</p>
                 </div>
                 <CopyButton text={code} className="w-5 h-5" />
