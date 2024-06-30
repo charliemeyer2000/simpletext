@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
             />
             <div className="flex flex-col justify-between gap-y-10 max-w-lg flex-1">
               <h3 className="text-4xl font-semibold">
-                API's <span className="text-theme-primary text-wrap">so easy</span>, <br /> you'd think they're stupid.
+                API&apos;s <span className="text-theme-primary text-wrap">so easy</span>, <br /> you&apos;d think they&apos;re stupid.
               </h3>
               <div className="flex flex-col gap-y-10 flex-grow">
                 <p className="text-lg text-grey text-wrap">
