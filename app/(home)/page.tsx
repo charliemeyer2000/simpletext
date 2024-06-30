@@ -46,7 +46,9 @@ export default function Home() {
             </div>
             <div className="flex flex-row ml-auto items-center gap-x-4">
               <CommandSearchBar />
-              <Button className="text-sm">Get Started</Button>
+              <Link href="/login">
+                <Button className="text-sm">Get Started</Button>
+              </Link>
               <ThemeToggle />
             </div>
           </nav>
@@ -65,8 +67,12 @@ export default function Home() {
             <CopyButton text="npm i simpletext" />
           </div>
           <div className="flex flex-row items-center justify-center gap-x-4">
-            <Button className="text-md">Get Started</Button>
-            <Button className="text-md" variant={"outline"}>Read the Docs</Button>
+            <Link href="/login">
+              <Button className="text-md">Get Started</Button>
+            </Link>
+            <Link href="https://docs.simpletext.dev" target="_blank" rel="noopener noreferrer">
+              <Button className="text-md" variant={"outline"}>Read the Docs</Button>
+            </Link>
           </div>
         </main>
       </div>
@@ -154,7 +160,9 @@ export async function POST(req: NextRequest) {
               cost="$0"
               period="/month"
               button={
-                <Button variant={"outline"} className="w-full">Get Started</Button>
+                <Link href="/login">
+                  <Button variant={"outline"} className="w-full">Get Started</Button>
+                </Link>
               }
               benefits={["100 sms texts/day across all apps", "literally it’s free."]}
             />
