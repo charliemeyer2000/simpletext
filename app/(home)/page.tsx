@@ -17,6 +17,7 @@ import Smile from "@/public/svg/smile.svg";
 import Chart from "@/public/svg/bar-chart-4.svg";
 import Scale from "@/public/svg/scale-3d.svg";
 import Phone from "@/public/svg/phone.svg";
+import GithubGrey from "@/public/svg/github-grey.svg";
 
 export default function Home() {
   return (
@@ -54,7 +55,7 @@ export default function Home() {
           <div className="max-w-4xl text-center">
             <h1 className="text-6xl font-black tracking-tight">
               <span className="text-theme-primary">stupidly simple</span>
-              <span> sms for the modern app developer.</span>
+              <span> sms for the <br /> modern app developer.</span>
             </h1>
           </div>
           <div className="flex flex-row items-center justify-center gap-x-4">
@@ -71,7 +72,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center justify-center gap-y-20">
         <section className="flex flex-col items-center justify-center gap-y-10">
-          <div className="flex flex-row items-start justify-start gap-x-10 h-full">
+          <div className="flex flex-col items-start justify-start gap-x-10 h-full sm:flex-row items-center gap-y-10">
             <CodeBlock
               code={
 `import { SimpleText } from 'simpletext';
@@ -95,10 +96,10 @@ export async function POST(req: NextRequest) {
             />
             <div className="flex flex-col justify-between gap-y-10 max-w-lg flex-1">
               <h3 className="text-4xl font-semibold">
-                API's <span className="text-theme-primary">so easy</span>, you'd think they're stupid.
+                API's <span className="text-theme-primary text-wrap">so easy</span>, <br /> you'd think they're stupid.
               </h3>
               <div className="flex flex-col gap-y-10 flex-grow">
-                <p className="text-lg text-grey">
+                <p className="text-lg text-grey text-wrap">
                   <strong className="text-primary">Ship apps with SMS at its core</strong>, using our simple APIs designed for the modern developer.
                   <strong className="text-primary"> Works with NextJS and other modern frameworks</strong>, while also exposing lower-level HTTPS APIs for any web or mobile use case.
                 </p>
@@ -142,9 +143,9 @@ export async function POST(req: NextRequest) {
             description="Work with our team to reserve your own phone number & special rates."
           />
         </section>
-        <section className="flex flex-col items-flex- justify-center gap-y-4" id="pricing">
-          <h2 className="text-4xl font-semibold text-center">
-            Worry about your app, <span className="text-theme-primary">not your wallet.</span>
+        <section className="flex flex-col items-flex justify-center gap-y-12" id="pricing">
+          <h2 className="text-5xl font-semibold text-center">
+            Worry about your app, <br /> <span className="text-theme-primary">not your wallet.</span>
           </h2>
           <div className="flex flex-row items-start justify-center gap-x-8">
             <PricingCard
@@ -164,7 +165,7 @@ export async function POST(req: NextRequest) {
               cost="$10"
               period="/month"
               button={
-                <Button variant={"default"} className="w-full bg-theme-primary">Get Started</Button>
+                <Button variant={"default"} className="w-full bg-theme-primary dark:hover:text-secondary">Get Started</Button>
               }
               benefits={["5000 texts/day across all apps", "batch jobs for messages", "dark mode"]}
             />
@@ -178,9 +179,50 @@ export async function POST(req: NextRequest) {
               benefits={["personal short-code number", "usage-based pricing"]}
             />
           </div>
-
-
         </section>
+        <footer className="flex flex-row items-center justify-center gap-x-36 p-5 text-muted-foreground border-t-2 border-gray w-full">
+          <div className="flex flex-col items-start justify-center gap-y-4">
+            <Link href="/login" className="text-sm text-grey hover:text-primary">
+              get started
+            </Link>
+            <Link href="/billing" className="text-sm text-grey hover:text-primary">
+              pricing
+            </Link>
+            <Link href="/billing" className="text-sm text-grey hover:text-primary">
+              cancel subscription
+            </Link>
+          </div>
+          <div className="flex flex-col items-start justify-center gap-y-4">
+            <Link href="/terms" className="text-sm text-grey hover:text-primary">
+              read the docs
+            </Link>
+            <Link href="https://github.com" target="_blank" className="text-sm text-grey hover:text-primary">
+              npm install
+            </Link>
+            <Link href="https://github.com" target="_blank" className="text-sm text-grey hover:text-primary">
+              demo project
+            </Link>
+          </div>
+          <div className="flex flex-col items-start justify-center gap-y-4">
+            <Link href="/contact" className="text-sm text-grey hover:text-primary">
+              help and support
+            </Link>
+            <Link href="mailto:contact@simpletext.dev" className="text-sm text-grey hover:text-primary">
+              contact us
+            </Link>
+            <Link href="mailto:contact@simpletext.dev" className="text-sm text-grey hover:text-primary">
+              work for us
+            </Link>
+          </div>
+          <div className="flex flex-col items-start justify-center gap-y-4 self-end">
+            <Link href="https://github.com/charliemeyer2000/simpletext" target="_blank" className="text-sm text-grey hover:text-primary">
+              <Image src={GithubGrey} width={20} height={20} alt="Github Logo" />
+            </Link>
+            <p className="text-sm text-grey">
+              © 2024 simpletext
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );
