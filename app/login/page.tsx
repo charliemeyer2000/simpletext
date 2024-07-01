@@ -9,6 +9,7 @@ export default function Page() {
             <h1>Login</h1>
             {/* <Button onClick={() => signIn("google")}>Sign in with Google</Button> */}
             <Button onClick={() => signIn("github")}>Sign in with Github</Button>
+            <Button onClick={() => signIn("google")}>Sign in with Google</Button>
         </div>
     )
 
