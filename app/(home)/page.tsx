@@ -18,8 +18,10 @@ import Chart from "@/public/svg/bar-chart-4.svg";
 import Scale from "@/public/svg/scale-3d.svg";
 import Phone from "@/public/svg/phone.svg";
 import GithubGrey from "@/public/svg/github-grey.svg";
+import CTAButton from "@/components/custom/pages/(home)/ctaButton";
 
 export default function Home() {
+
   return (
     <div className="overflow-x-hidden">
       <div className="flex h-screen flex-col justify-center items-center">
@@ -46,9 +48,9 @@ export default function Home() {
             </div>
             <div className="flex flex-row ml-auto items-center gap-x-4">
               <CommandSearchBar />
-              <Link href="/login">
-                <Button className="text-sm">Get Started</Button>
-              </Link>
+              <div className="w-28 flex items-center justify-center"> {/* hack to make skeleton not jiggle */}
+                <CTAButton />
+              </div>
               <ThemeToggle />
             </div>
           </nav>
@@ -67,9 +69,9 @@ export default function Home() {
             <CopyButton text="npm i simpletext" />
           </div>
           <div className="flex flex-row items-center justify-center gap-x-4">
-            <Link href="/login">
-              <Button className="text-md">Get Started</Button>
-            </Link>
+            <div className="w-28 flex items-center justify-center"> {/* hack to make skeleton not jiggle */}
+              <CTAButton />
+            </div>
             <Link href="https://docs.simpletext.dev" target="_blank" rel="noopener noreferrer">
               <Button className="text-md" variant={"outline"}>Read the Docs</Button>
             </Link>
@@ -160,7 +162,7 @@ export async function POST(req: NextRequest) {
               cost="$0"
               period="/month"
               button={
-                <Link href="/login">
+                <Link href="/login" className="w-full">
                   <Button variant={"outline"} className="w-full">Get Started</Button>
                 </Link>
               }
