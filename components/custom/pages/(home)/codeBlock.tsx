@@ -3,7 +3,7 @@ import {cn} from "@/lib/utils";
 import Image from "next/image";
 import {oneLight, oneDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
-import CopyButton from "@/components/custom/copyButton";
+import CopyButton from "@/components/custom/buttons/copyButton";
 import {useTheme} from "next-themes";
 
 interface CodeBlockProps {
@@ -30,7 +30,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({code, language, languageIma
                 codeTagProps={{
                     style: {
                         'background': 'transparent',
-                        'fontSize': '14px',   
+                        'fontSize': '14px',
                     }
                 }}
             >

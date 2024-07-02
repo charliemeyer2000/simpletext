@@ -1,7 +1,7 @@
 "use client";
 import {Input} from "@/components/ui/input";
 
-import {CommandDialog} from "@/components/custom/commandDialog";
+import {CommandDialog} from "@/components/custom/buttons/commandDialog";
 
 import {useState} from "react";
 

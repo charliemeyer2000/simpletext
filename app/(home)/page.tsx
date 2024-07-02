@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import {ThemeToggle} from "@/components/custom/themeToggle";
+import {ThemeToggle} from "@/components/custom/buttons/themeToggle";
 import {Button} from "@/components/ui/button";
-import {CommandSearchBar} from "@/components/custom/commandSearchBar";
-import CopyButton from "@/components/custom/copyButton";
-import {BenefitCard} from "@/components/custom/benefitCard";
+import {CommandSearchBar} from "@/components/custom/buttons/commandSearchBar";
+import CopyButton from "@/components/custom/buttons/copyButton";
+import {BenefitCard} from "@/components/custom/pages/(home)/benefitCard";
 import TypeScript from "@/public/svg/typescript.svg";
 import React from "react";
-import {CodeBlock} from "@/components/custom/codeBlock";
-import PricingCard from "@/components/custom/pricingCard";
+import {CodeBlock} from "@/components/custom/pages/(home)/codeBlock";
+import PricingCard from "@/components/custom/pages/(home)/pricingCard";
 
 
 import DollarSign from "@/public/svg/dollar-sign.svg";

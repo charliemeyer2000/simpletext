@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import "@/styles/globals.css";
 import {ThemeProvider} from "@/lib/providers/themeProvider";
+import {SessionProvider} from "next-auth/react";
 
 
 export const metadata: Metadata = {
@@ -23,14 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-screen w-screen bg-background font-sans text-foreground overflow-x-hidden">
+        <SessionProvider>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          enableSystem
+            defaultTheme="light"
           disableTransitionOnChange
+            enableSystem
+
         >
           {children}
-        </ThemeProvider>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
