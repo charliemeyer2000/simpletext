@@ -1,0 +1,85 @@
+import { Callout, Steps, Tab, Tabs } from "nextra-theme-docs";
+
+import EnvSetup from "./_shared/env-setup.mdx";
+
+# React & Next.js (JavaScript Frameworks)
+
+For any framework that uses JavaScript, you can use the `@simpletext/client` package to interact with the simpletext API!
+
+<EnvSetup />
+
+## Set Up Your Client
+
+<Steps>
+### Create a Config File
+
+Similar to Firebase and other services, we suggest that you create a central configuration file
+for your simpletext client to use throughout your app. You can re-use this file in any component or API route, 
+rather than re-declaring the `SimpleTextClient` each time.
+
+```ts filename="lib/simpletext.ts"
+import {SimpleTextClient, SimpleTextConfig} from "@simpletext/client";
+
+const config: SimpleTextConfig = {
+  secretKey: process.env.SIMPLETEXT_SECRET!,
+  appId: process.env.SIMPLETEXT_APP_ID!,
+};
+
+export const simpletext = new SimpleTextClient(config);
+```
+
+### Use The Client
+
+Now that you have your client set up, you can use it to interact with the simpletext API. Below is a simple example
+using it in NextJS 14 with the `/app` router. 
+
+```ts filename="app/page.tsx"
+"use client";
+import {simpletext} from "@/lib/simpletext"; // or wherever you put your client!
+import {SendSMSParams} from "@simpletext/client";
+
+export default function Page() {
+
+    const sendSMS = async (params: SendSMSParams) => {
+        try {
+            const response = await simpletext.sendSMS(params);
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    return (
+        <button onClick={() => sendSMS({to: "+11234567890", message: "Hello, Ryland!"})}>
+            Send SMS
+        </button>
+    )
+}
+```
+
+<Callout type="info">
+  Although we're using NextJS in this example, you can use the `simpletext` client in any JavaScript framework!
+</Callout>
+
+### Use it in Next API Routes!
+
+If you're working on the bleeding edge with Next.JS and the app router, you can also call your client from an API route.
+
+```ts filename="pages/api/sms/route.ts"
+import { NextRequest, NextResponse } from "next/server";
+import {simpletext} from "@/lib/simpletext"; // or wherever you put your client!
+
+export async function POST(req: NextRequest) {
+
+    const {to, message} = await req.body.json();
+
+    try {
+        const response = await simpletext.sendSMS({to, message});
+        return NextResponse.json({message: "SMS Sent!"}, {status: 200});
+    } catch (error) {
+        return NextResponse.error({message: "Failed to send SMS"}, {status: 500});
+    }
+}
+```
+
+</Steps>

@@ -1,0 +1,13 @@
+# node modules
+node_modules
+
+# Env configuration (just in case)
+.env
+
+# dist folder
+dist
+
+# Generated Files
+*.js
+*.d.ts
+*.map

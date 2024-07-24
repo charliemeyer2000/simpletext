@@ -1,0 +1,30 @@
+{
+  "name": "@simpletext/client",
+  "version": "1.0.7",
+  "description": "A type-safe client for SimpleText API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "simpletext",
+    "sms",
+    "otp",
+    "typescript"
+  ],
+  "author": "Charlie Meyer",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5",
+    "@types/node": "^14.14.31",
+    "ts-node": "^10.0.0"
+  },
+  "files": [
+    "dist"
+  ]
+}

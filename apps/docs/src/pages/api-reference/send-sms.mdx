@@ -1,0 +1,86 @@
+import { Callout } from 'nextra/components'
+import { Tab, Tabs } from 'nextra/components'
+
+# Sending SMS
+
+This guide explains how to send SMS messages using the SimpleText API. SMS is the core service that simpletext provides,
+allowing you to send transactional messages, notifications, and alerts to your users. 
+
+SMS messages are sent using the `POST /sms` endpoint. You can send messages using the SimpleText client package or directly
+using cURL. All phone numbers are ***expected** to be in E.164 format* (e.g., if your phone number is +1-123-456-7890, you would
+send it as `+11234567890`).
+
+## Using the SimpleText Package
+
+<Callout type="warning">
+  If you haven't already, make sure to follow the steps to [get started](https://simpletext.dev/login) by installing
+  `@simpletext/client` and [creating an account!](https://simpletext.dev/dashboard)
+</Callout>
+
+Then, use the `sendSMS` method to send a message:
+
+```typescript
+import {simpletext} from "@/lib/simpletext"; // or wherever you put your client!
+import {SendSMSParams} from "@simpletext/client";
+
+export async function sendSMS() {
+  const params: SendSMSParams = {
+    to: "+11234567890",
+    message: "Hi, Ryland!",
+  };
+  try {
+    const response = await simpletext.sendSMS(params);
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+## Using cURL
+
+You can also send SMS messages directly using cURL:
+
+```bash
+curl -X POST https://api.simpletext.dev/sms \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+11234567890",
+    "message": "Hi, Ryland!",
+    "SIMPLETEXT_SECRET": "your-secret-here",
+    "SIMPLETEXT_APP_ID": "your-app-id-here"
+}'
+```
+
+<Callout type="info">
+  Replace the `to`, `SIMPLETEXT_SECRET`, and `SIMPLETEXT_APP_ID` values with your actual phone number, secret key, and app ID.
+</Callout>
+
+## Response
+
+Both methods will return a response in the following format:
+
+<Tabs items={['Success', 'Error']}>
+  <Tab>
+    ```json
+        {
+          "success": true,
+          "message": "SMS sent successfully",
+          "requests_remaining_today": 123 // number of requests remaining for the day
+        }
+    ```
+  </Tab>
+  <Tab>
+    ```json
+    {
+      "success": false,
+      "error": "Error message details",
+      "requests_remaining_today": 123 // number of requests remaining for the day
+    }
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="warning">
+  Make sure to handle both success and error cases in your application.
+</Callout>

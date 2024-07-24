@@ -1,0 +1,36 @@
+import { Callout } from "nextra-theme-docs";
+
+# What is simpletext?
+
+<Callout>
+Know what you're here for? Get started quickly and skip the crap [here](/getting-started/React-&-NextJS).
+</Callout>
+
+simpletext is a stupidly simple service to handle sms messages and otp verification. 
+Oh yeah, and it's free - no credit card to sign up, and you get 100 messages for free every day.
+
+simpletext removes the bloat and barriers to entry necessary to send sms messages, perfect
+for a simple project or a quick hackathon, but scalable to handle production traffic. To achieve this, we did three main things:
+
+## 1. Simplified API and User Experience
+
+We timed outselves speedruninng setup for simpletext - _we got an sms message [sent in under 1 minute in a 
+NextJS application](https://www.youtube.com/watch?v=NY5Nvw57mQs)_ and _sent in 23 seconds with cURL_. Point being, it's __fast__ and __easy__ to get started.
+When developing simpletext, we foucsed heavily on the developer experience, making a bloatless
+UI to just get started - no bs, emails, spam or promotions. We just give talented developers
+the tools to built awesome shit.
+
+In doing this, we've made the API as simple as possible, boiling down the process to three api calls - 
+`sendSMS()`, `requestOTP`, and `verifyOTP`. That's _it_.
+
+## 2. Type-Safe Package for the Client
+
+We've also created a type-safe package to interact with the simpletext API, `@simpletext/client`, but users 
+may also interact with the API directly through cURL, HTTP clients, or other languages' built-in request modules. This way, 
+we let developers be developers and use our tools the _way they want_. 
+
+## 3. Open-Sourced Libraries 
+
+We've open-sourced our `@simpletext/client` package to allow contributions and improvements from the community,
+and we further welcome contributions to the [docs](https://github.com/charliemeyer2000/simpletext/tree/main/apps/docs) 
+and [examples](https://github.com/charliemeyer2000/simpletext/tree/main/examples).

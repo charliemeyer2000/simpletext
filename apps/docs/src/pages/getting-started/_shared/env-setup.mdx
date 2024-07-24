@@ -1,0 +1,28 @@
+import { Callout, Steps, Tab, Tabs } from "nextra-theme-docs";
+
+## Setting up your environment
+
+<Steps>
+
+### Install the packages
+
+```bash copy npm2yarn
+npm install @simpletext/client
+```
+
+### Add env variables
+
+<Callout type="info">
+  Replace  `SIMPLETEXT_SECRET` `SIMPLETEXT_APP_ID` values with your actual secret key and app ID.
+</Callout>
+
+```bash filename=".env.local" copy
+SIMPLETEXT_SECRET=your-secret-key
+SIMPLETEXT_APP_ID=your-app-id
+```
+
+{/* <Callout type="warning">
+  If you don't already have a simpletext secret key, [sign up](https://simpletext.dev/login) and create one from
+  the [dashboard!](https://simpletext.dev/dashboard)
+</Callout> */}
+</Steps>

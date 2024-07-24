@@ -1,0 +1,101 @@
+import { Callout } from 'nextra/components'
+import { Tab, Tabs } from 'nextra/components'
+
+# Requesting OTP
+
+<Callout type="info">
+  Requesting OTP codes is for "simple" and "expert" plans only. If you're on the "free" plan, [upgrade](https://simpletext.dev/pricing) to access this feature.
+  _Already a subscriber? Go to your [dashboard](https://simpletext.dev/dashboard/all) to create keys for an app._
+</Callout>
+
+This guide explains how to request a One-Time Password (OTP) using the SimpleText API.
+OTP codes are used to verify user phone numbers, secure accounts, and act as an extra layer of security for your app. simpletext provides
+a simple API to request OTP codes for your users, so you can focus on building your app.
+
+Recall that all phone numbers that you are requesting an OTP code for are *expected to be in E.164 format* (e.g., if your phone number is +1-123-456-7890, you would
+send it as `+11234567890`).
+
+## Using the SimpleText Package
+
+{/* <Callout type="warning">
+  If you haven't already, make sure to follow the steps to [get started](https://simpletext.dev/login) by installing
+  `@simpletext/client` and [creating an account!](https://simpletext.dev/dashboard)
+</Callout> */}
+
+If you haven't already, make sure to follow the steps to [get started](https://simpletext.dev/login) by installing
+  `@simpletext/client` and [creating an account!](https://simpletext.dev/dashboard) Then, use the `requestOTP` method to request an OTP:
+
+```ts filename="app/page.tsx"
+import {simpletext} from "@/lib/simpletext"; // or wherever you put your client!
+import {RequestOTPParams} from "@simpletext/client";
+
+export async function requestOTP() {
+  const params: RequestOTPParams = {
+    to: "+11234567890",
+    appName: "MyAppName",
+  };
+
+  try {
+    const response = await simpletext.requestOTP(params);
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+};
+```
+
+## Using cURL
+
+You can also request an OTP directly using cURL:
+
+```bash
+curl -X POST https://api.simpletext.dev/request-otp \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+11234567890",
+    "app_name": "MyAppName",
+    "SIMPLETEXT_SECRET": "your-secret-here",
+    "SIMPLETEXT_APP_ID": "your-app-id-here"
+}'
+```
+
+<Callout type="info">
+  Replace the `to`, `SIMPLETEXT_SECRET`, and `SIMPLETEXT_APP_ID` values with your actual phone number, secret key, and app ID.
+</Callout>
+
+## Response
+
+Both methods will return a response in the following format:
+
+<Tabs items={['Success', 'Error']}>
+  <Tab>
+    ```json
+        {
+          "message": "OTP sent successfully", 
+          "reference_id": "c8ed9735700e43cd8803c07468669fa4", // an example reference_id 
+          "requests_remaining_today": 995, 
+          "to": "+11234567890"
+        }
+    ```
+  </Tab>
+  <Tab>
+    ```json
+        {
+          "error": "Failed to send OTP", 
+        }
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="warning">
+  Make sure to store the `reference_id`, as you'll need it to validate this OTP code later.
+</Callout>
+
+## Additional Parameters
+
+In addition to the required parameters, you can optionally pass in the following parameters to a request to validate an OTP (the following is for a `cURL` request, but 
+the types are provided optionally in `@simpletext/client`):
+
+- `code_length` (number): The length of the OTP code from 5-8, defaults to 6
+- `allowed_attempts` (number): The number of attempts allowed to validate the OTP from 1-5, defaults to 3
+- `validity_period` (number): The number of minutes that the OTP code is valid for from 5-60, defaults to 20
+- `langauge` (string): The language, in IETF BCP-47 format, to use when sending the message, defaults to en-US

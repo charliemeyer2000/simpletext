@@ -1,0 +1,189 @@
+import { Callout, Steps } from "nextra/components";
+import { Tab, Tabs } from "nextra/components";
+
+# Validating OTP
+
+<Callout type="info">
+  Validating OTP codes is for "simple" and "expert" plans only. If you're on the "free" plan, [upgrade](https://simpletext.dev/pricing) to access this feature.
+  _Already a subscriber? Go to your [dashboard](https://simpletext.dev/dashboard/all) to create keys for an app._ 
+</Callout>
+
+This guide explains how to validate a One-Time Password (OTP) using the SimpleText API. Once you have requested an OTP, 
+you can use the `referenceId` returned by `requestOTP` to validate the OTP code entered by the user. Recall that all phone numbers that you are requesting an OTP code for are *expected to be in E.164 format* (e.g., if your phone number is +1-123-456-7890, you would
+send it as `+11234567890`).
+
+## Code Examples
+
+### Using the SimpleText Package
+
+Once you have requested a one-time code with `requestOtp`, you will be returned a `RequestOtpResponse` object with a `reference_id`. 
+Use the `validateOTP` method to validate an OTP code with the `reference_id`:
+
+```typescript
+import {simpletext} from "@/lib/simpletext"; // or wherever you put your client!
+import {ValidateOTPParams} from "@simpletext/client";
+export async function validateOTP() {
+  const params: ValidateOTPParams = {
+    to: "+13472764531",
+    referenceId: "abc123def456", // unique id returned by a call to requestOTP
+    otpCode: "123456", // code sent to the phone number in the to field
+  };
+  try {
+    const response = await simpletext.validateOTP(params);
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+### Using cURL
+
+You can also validate an OTP directly using cURL:
+
+```bash
+curl -X POST https://api.dev.simpletext.dev/validate-otp \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+13472764531",
+    "reference_id": "abc123def456",
+    "otp_code": "123456",
+    "SIMPLETEXT_SECRET": "your-secret-here",
+    "SIMPLETEXT_APP_ID": "your-app-id-here"
+}'
+```
+
+<Callout type="info">
+  Replace the `to`, `reference_id`, `otp_code`, `SIMPLETEXT_SECRET`,
+  and `SIMPLETEXT_APP_ID` values with your actual data.
+</Callout>
+
+### Response
+
+Both methods will return a response in the following format:
+
+<Tabs items={['Success', 'Error']}>
+  <Tab>
+    ```json
+        {
+          "message": "OTP verified successfully", 
+          "status": true
+        }
+    ```
+  </Tab>
+  <Tab>
+    ```json
+        {
+          "error": "OTP verification failed", 
+          "status": false
+        }
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="warning">
+  Handle both successful and failed validations in your application logic.
+</Callout>
+
+<Callout type="info">
+  The `status` field in the success response will be either "valid" or "invalid"
+  depending on whether the OTP was correct.
+</Callout>
+
+## Full Walkthrough
+
+This walkthrough will guide you through the process of requesting and validating an OTP code using cURL (as a generic demonstration). 
+This demonstration will use the SimpleText package for Node.js. _Note:_ this assumes you have an account, have created an app, are in the "simple" or "expert" tier, and
+have your `SIMPLETEXT_SECRET` and `SIMPLETEXT_APP_ID` values. If you are looking for an example with NextJS, ShadcnUI and a proper authentication flow,
+check out [this example](https://github.com/charliemeyer2000/simpletext/tree/main/examples/authentication-otp-appdir-nextauth).
+
+<Steps>
+
+### Request OTP for a User
+
+```bash 
+curl -X POST https://api.dev.simpletext.dev/request-otp \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+11234567890",
+    "app_name": "MyAppName",
+    "SIMPLETEXT_SECRET": "sk_0d1700bb167dfd09bd31c2482fb42b5a", 
+    "SIMPLETEXT_APP_ID": "9fe3e866-9dba-4c61-8b01-2b009f10edee"
+}'
+
+```
+
+### Get & Save the Response
+
+Once the request has been processed, you will:
+1. Recieve a response with a `reference_id`. Save this value for later.
+1. Recieve a text message with the OTP code.
+
+An example response would look like:
+
+```json
+{
+  "message": "OTP sent successfully", 
+  "reference_id": "b2b2a7c01b18443084d9a8c9367726a9", // save this value! 
+  "requests_remaining_today": 999, 
+  "to": "+11234567890"
+}
+```
+
+### Validate the OTP Code
+
+Now, with the code sent to the phone number and the `reference_id`, we can validate the OTP code sent to 
+the phone number (the text will look like "This is your One Time Password: _code_ from _app_name_").
+
+```bash
+curl -X POST https://api.simpletext.dev/validate-otp \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+13472764531",
+    "reference_id": "b2b2a7c01b18443084d9a8c9367726a9",
+    "otp_code": "446416",
+    "SIMPLETEXT_SECRET": "sk_0d1700bb167dfd09bd31c2482fb42b5a",
+    "SIMPLETEXT_APP_ID": "9fe3e866-9dba-4c61-8b01-2b009f10edee"
+}'
+```
+
+### OTP Response
+
+Depending on whether the user passed in the correct OTP code or not, you will receive a success or 
+error response as seen below:
+
+<Tabs items={['Success', 'Error']}>
+  <Tab>
+    ```json
+        {
+          "message": "OTP verified successfully", 
+          "status": true
+        }
+    ```
+  </Tab>
+  <Tab>
+    ```json
+        {
+          "error": "OTP verification failed", 
+          "status": false
+        }
+    ```
+  </Tab>
+</Tabs>
+
+### Conclusion
+
+In this example, we've shown how _you_ can provide OTP as a part of your application - whether
+for adding security layers to access pages or for verifying phone numbers of your users. Once again, 
+for fully-built examples leveraging simpletext's API with NextJS, ShadcnUI, and a proper authentication flow,
+check out [this example](https://github.com/charliemeyer2000/simpletext/tree/main/examples/authentication-otp-appdir-nextauth).
+
+
+</Steps>
+
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+{
+  "index": {
+    "title": "Introduction",
+    "theme": {
+      "typesetting": "article",
+      "breadcrumb": false,
+      "toc": false
+    }
+  },
+  "getting-started": "Getting Started",
+  "api-reference": "API Reference",
+  "--1": {
+    "type": "separator"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions (FAQ)",
+    "theme": {
+      "toc": false
+    }
+  },
+
+  "project-link": {
+    "title": "Dashboard ↗",
+    "type": "page",
+    "href": "https://simpletext.dev/dashboard",
+    "newWindow": true
+  }
+}
