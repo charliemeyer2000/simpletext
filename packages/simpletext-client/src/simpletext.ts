@@ -36,7 +36,7 @@ export class SimpleTextClient {
 
   private async makeRequest<T>(
     endpoint: string,
-    data: any
+    data: any,
   ): Promise<APIResponse<T>> {
     try {
       const response = await fetch(`${this.baseURL}${endpoint}`, {
@@ -105,7 +105,7 @@ export class SimpleTextClient {
    *   });
    */
   async requestOTP(
-    params: RequestOTPParams
+    params: RequestOTPParams,
   ): Promise<APIResponse<RequestOTPResponse>> {
     return this.makeRequest<RequestOTPResponse>("/request-otp", {
       to: params.to,
@@ -113,7 +113,7 @@ export class SimpleTextClient {
       validity_period: params.validityPeriod || 20,
       allowed_attempts: params.allowedAttempts || 3,
       code_length: params.codeLength || 6,
-      language: params.language || "en-US"
+      language: params.language || "en-US",
     });
   }
 
@@ -133,7 +133,7 @@ export class SimpleTextClient {
    *   });
    */
   async validateOTP(
-    params: ValidateOTPParams
+    params: ValidateOTPParams,
   ): Promise<APIResponse<ValidateOTPResponse>> {
     return this.makeRequest<ValidateOTPResponse>("/validate-otp", {
       to: params.to,

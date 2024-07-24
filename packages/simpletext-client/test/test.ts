@@ -55,9 +55,9 @@ async function testValidateOTP() {
 
 // Run all tests
 async function runTests() {
-//   await testSendSMS();
-//   await testRequestOTP();
-//   await testValidateOTP();
+  //   await testSendSMS();
+  //   await testRequestOTP();
+  //   await testValidateOTP();
 }
 
 runTests();

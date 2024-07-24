@@ -24,7 +24,6 @@ simpletext welcomes contributions to make sms even simpler. We are especially lo
 - [ ] Python Support
 - [ ] NextJS app router support (including middleware for auth & route handlers for `/api/simpletext` routes)
 
-
 To contribute:
 
 1. Fork and clone the repository

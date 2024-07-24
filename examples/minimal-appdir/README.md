@@ -1,6 +1,5 @@
 # Minimal Next.js App Router example for simpletext
 
-
 ## Quick Start
 
 1. Grab an API key from the simpletext dashboard:
