@@ -72,7 +72,7 @@ export type ValidateOTPParams = {
  */
 export type SendSMSResponse = {
   message: string;
-  requests_remaining_today: number;
+  requests_remaining_today: number | string;
 };
 
 /**
@@ -81,7 +81,7 @@ export type SendSMSResponse = {
 export type RequestOTPResponse = {
   message: string;
   reference_id: string;
-  requests_remaining_today: number;
+  requests_remaining_today: number | string;
   to: string;
 };
 
