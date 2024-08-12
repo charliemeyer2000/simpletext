@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  <a href="https://simpletext.dev">Home</a> | <a href="https://docs.simpletext.dev">Docs</a> | <a href="https://docs.simpletext.dev/roadmap">Roadmap</a>
+  <a href="https://simpletext.dev">Home</a> | <a href="https://docs.simpletext.dev">Docs</a> | <a href="https://docs.simpletext.dev/roadmap">Roadmap</a> | <a href="https://news.simpletext.dev/roadmap">Newsletter</a>
 </div>
 
 ## what is simpletext?

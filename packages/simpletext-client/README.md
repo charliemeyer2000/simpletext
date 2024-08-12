@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  <a href="https://simpletext.dev">Home</a> | <a href="https://docs.simpletext.dev">Docs</a> | <a href="https://docs.simpletext.dev/roadmap">Roadmap</a>
+  <a href="https://simpletext.dev">Home</a> | <a href="https://docs.simpletext.dev">Docs</a> | <a href="https://docs.simpletext.dev/roadmap">Roadmap</a> | <a href="https://news.simpletext.dev/roadmap">Newsletter</a>
 </div>
 
 ## Table of Contents
@@ -19,10 +19,6 @@ This repository contains the client, `@simpletext/client` for simpletext (stupid
 ## Contributing
 
 simpletext welcomes contributions to make sms even simpler. We are especially looking for talented developers to help build our APIs as per our [roadmap](https://docs.simpletext.dev/roadmap) to contribute to a couple key contributions (among others)!
-
-- [ ] Swift Support
-- [ ] Python Support
-- [ ] NextJS app router support (including middleware for auth & route handlers for `/api/simpletext` routes)
 
 To contribute:
 
