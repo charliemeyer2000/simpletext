@@ -1,0 +1,230 @@
+# SimpleText API Guide for LLMs
+
+## Overview
+SimpleText is a simple SMS service for sending messages and implementing OTP (One-Time Password) verification.
+
+## Authentication
+- Required for all requests: `SIMPLETEXT_SECRET` and `SIMPLETEXT_APP_ID`
+- Obtain from https://simpletext.dev
+
+## API Endpoints
+- Base URL: https://api.simpletext.dev
+- Send SMS: POST /sms
+- Request OTP: POST /request-otp
+- Validate OTP: POST /validate-otp
+
+## Command Line Examples (cURL)
+
+### Send SMS
+```bash
+curl -X POST https://api.simpletext.dev/sms \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+11234567890",
+    "message": "Hello, World!",
+    "SIMPLETEXT_SECRET": "your-secret-here",
+    "SIMPLETEXT_APP_ID": "your-app-id-here"
+}'
+```
+
+### Request OTP
+```bash
+curl -X POST https://api.simpletext.dev/request-otp \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+11234567890",
+    "app_name": "MyAppName",
+    "SIMPLETEXT_SECRET": "your-secret-here",
+    "SIMPLETEXT_APP_ID": "your-app-id-here"
+}'
+```
+
+### Validate OTP
+```bash
+curl -X POST https://api.simpletext.dev/validate-otp \
+-H "Content-Type: application/json" \
+-d '{
+    "to": "+11234567890",
+    "reference_id": "abc123def456",
+    "otp_code": "123456",
+    "SIMPLETEXT_SECRET": "your-secret-here",
+    "SIMPLETEXT_APP_ID": "your-app-id-here"
+}'
+```
+
+## Python Examples
+
+### Setup
+```python
+import requests
+import json
+
+SIMPLETEXT_SECRET = "your-secret-here"
+SIMPLETEXT_APP_ID = "your-app-id-here"
+BASE_URL = "https://api.simpletext.dev"
+
+headers = {
+    "Content-Type": "application/json"
+}
+```
+
+### Send SMS
+```python
+def send_sms(to, message):
+    data = {
+        "to": to,  # E.164 format: +11234567890
+        "message": message,
+        "SIMPLETEXT_SECRET": SIMPLETEXT_SECRET,
+        "SIMPLETEXT_APP_ID": SIMPLETEXT_APP_ID
+    }
+    
+    response = requests.post(
+        f"{BASE_URL}/sms", 
+        headers=headers, 
+        data=json.dumps(data)
+    )
+    
+    return response.json()
+```
+
+### Request OTP
+```python
+def request_otp(to, app_name, code_length=6, allowed_attempts=3, validity_period=20, language="en-US"):
+    data = {
+        "to": to,  # E.164 format: +11234567890
+        "app_name": app_name,
+        "code_length": code_length,  # 5-8 digits
+        "allowed_attempts": allowed_attempts,  # 1-5 attempts
+        "validity_period": validity_period,  # 5-60 minutes
+        "language": language,  # IETF BCP-47 format
+        "SIMPLETEXT_SECRET": SIMPLETEXT_SECRET,
+        "SIMPLETEXT_APP_ID": SIMPLETEXT_APP_ID
+    }
+    
+    response = requests.post(
+        f"{BASE_URL}/request-otp", 
+        headers=headers, 
+        data=json.dumps(data)
+    )
+    
+    return response.json()  # Contains reference_id needed for validation
+```
+
+### Validate OTP
+```python
+def validate_otp(to, reference_id, otp_code):
+    data = {
+        "to": to,  # E.164 format: +11234567890
+        "reference_id": reference_id,  # From request_otp response
+        "otp_code": otp_code,  # Code entered by user
+        "SIMPLETEXT_SECRET": SIMPLETEXT_SECRET,
+        "SIMPLETEXT_APP_ID": SIMPLETEXT_APP_ID
+    }
+    
+    response = requests.post(
+        f"{BASE_URL}/validate-otp", 
+        headers=headers, 
+        data=json.dumps(data)
+    )
+    
+    return response.json()
+```
+
+## TypeScript Examples
+
+### Setup
+```typescript
+import { SimpleTextClient, SimpleTextConfig } from "@simpletext/client";
+
+const config: SimpleTextConfig = {
+  secretKey: process.env.SIMPLETEXT_SECRET!,
+  appId: process.env.SIMPLETEXT_APP_ID!,
+};
+
+const simpletext = new SimpleTextClient(config);
+```
+
+### Send SMS
+```typescript
+import { SendSMSParams } from "@simpletext/client";
+
+async function sendSMS(to: string, message: string) {
+  const params: SendSMSParams = {
+    to,  // E.164 format: +11234567890
+    message,
+  };
+  
+  try {
+    const response = await simpletext.sendSMS(params);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+```
+
+### Request OTP
+```typescript
+import { RequestOTPParams } from "@simpletext/client";
+
+async function requestOTP(
+  to: string, 
+  appName: string, 
+  codeLength = 6, 
+  allowedAttempts = 3, 
+  validityPeriod = 20, 
+  language = "en-US"
+) {
+  const params: RequestOTPParams = {
+    to,  // E.164 format: +11234567890
+    appName,
+    codeLength,      // 5-8 digits
+    allowedAttempts, // 1-5 attempts
+    validityPeriod,  // 5-60 minutes
+    language,        // IETF BCP-47 format
+  };
+
+  try {
+    const response = await simpletext.requestOTP(params);
+    return response;  // Contains referenceId needed for validation
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+```
+
+### Validate OTP
+```typescript
+import { ValidateOTPParams } from "@simpletext/client";
+
+async function validateOTP(to: string, referenceId: string, otpCode: string) {
+  const params: ValidateOTPParams = {
+    to,          // E.164 format: +11234567890
+    referenceId, // From requestOTP response
+    otpCode,     // Code entered by user
+  };
+
+  try {
+    const response = await simpletext.validateOTP(params);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+```
+
+## Important Notes
+- Phone numbers must be in E.164 format (e.g., +11234567890)
+- Free tier: 100 SMS per day
+- OTP verification requires "simple" or "expert" plan
+- Customizable OTP settings:
+  - Code length: 5-8 digits (default: 6)
+  - Validity period: 5-60 minutes (default: 20)
+  - Allowed attempts: 1-5 (default: 3)
+  - Language: IETF BCP-47 format (default: en-US)
+
+## Response Format
+All APIs return JSON with status information
